@@ -1,1 +1,198 @@
+```Kotlin : MainActivity.kt
+package com.lifecyclesample.mainactivity
 
+import android.os.Bundle
+import android.view.ViewTreeObserver
+import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ImageSwitcher
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var imgSwitcher: ImageSwitcher
+
+    private val catImages = intArrayOf(
+        R.drawable.cat_one,
+        R.drawable.cat_two,
+        R.drawable.cat_three
+    )
+
+    private var currentIndex = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        imgSwitcher = findViewById(R.id.imgSwitcher)
+        val btnNext = findViewById<Button>(R.id.btnNext)
+
+        // Set up ImageSwitcher
+        imgSwitcher.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                imgSwitcher.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                imgSwitcher.setFactory {
+                    ImageView(this@MainActivity).apply {
+                        scaleType = ImageView.ScaleType.CENTER_CROP
+                        layoutParams = FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.MATCH_PARENT,
+                            FrameLayout.LayoutParams.MATCH_PARENT
+                        )
+                    }
+                }
+
+                // Fade animation
+                imgSwitcher.inAnimation = AnimationUtils.loadAnimation(this@MainActivity, android.R.anim.fade_in)
+                imgSwitcher.outAnimation = AnimationUtils.loadAnimation(this@MainActivity, android.R.anim.fade_out)
+
+                // Start with first cat
+                imgSwitcher.setImageResource(catImages[currentIndex])
+            }
+        })
+
+        // Next cat on click
+        btnNext.setOnClickListener {
+            currentIndex = (currentIndex + 1) % catImages.size
+            imgSwitcher.setImageResource(catImages[currentIndex])
+        }
+    }
+}
+
+
+
+```res/layout/activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="32dp">
+
+        <!-- Static Image (optional) -->
+        <ImageView
+            android:id="@+id/imgStatic"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/cat_one"
+            android:contentDescription="Static cat"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="60dp" />
+
+        <!-- ImageSwitcher -->
+        <ImageSwitcher
+            android:id="@+id/imgSwitcher"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/imgStatic"
+            app:layout_constraintBottom_toTopOf="@id/btnNext"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Next Button -->
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next Mood"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="32dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+```ews/values/strings.xml
+<resources>
+    <string name="app_name">MainActivity</string>
+    <string name="toggle_image">Toggle Image</string>
+
+    <!-- Optional: For future labs -->
+    <string name="btn_standard">Standard Button</string>
+    <string name="btn_image_desc">Send messages</string>
+    <string name="btn_toggle_on">ON</string>
+    <string name="btn_toggle_off">OFF</string>
+    <string name="toast_standard">Standard button clicked!</string>
+    <string name="toast_image">Image button clicked!</string>
+    <string name="toast_toggle_on">Toggle is ON</string>
+    <string name="toast_toggle_off">Toggle is OFF</string>
+</resources>
+
+
+
+
+```Gradle Scripts/build.gradle.kts - Module:app
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+}
+
+android {
+    namespace = "com.lifecyclesample.mainactivity"
+    compileSdk {
+        version = release(36)
+    }
+
+    defaultConfig {
+        applicationId = "com.lifecyclesample.mainactivity"
+        minSdk = 24
+        targetSdk = 36
+        versionCode = 1
+        versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+    buildFeatures {
+        compose = true
+    }
+}
+
+dependencies {
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
+    implementation("androidx.appcompat:appcompat:1.7.1")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+}
+
+```end of codes
