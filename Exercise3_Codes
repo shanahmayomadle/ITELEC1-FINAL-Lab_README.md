@@ -1,1 +1,129 @@
+```kotlin+java\...\...\MainActivity
+package com.lifecyclesample.labexercises
 
+import android.os.Bundle
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
+import com.lifecyclesample.labexercises.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Step 3: AutoCompleteTextView – Country suggestions
+        val countries = resources.getStringArray(R.array.countries)
+        val countryAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, countries)
+        binding.actvCountry.setAdapter(countryAdapter)
+
+        // Step 4: Spinner – 5 options
+        val spinnerOptions = resources.getStringArray(R.array.spinner_options)
+        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, spinnerOptions)
+        binding.spinnerOptions.adapter = spinnerAdapter
+    }
+}
+
+
+
+
+```res\layout\activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Step 1: Instructions -->
+    <TextView
+        android:id="@+id/tvInstructions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/instructions"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Step 2: EditText for free input -->
+    <EditText
+        android:id="@+id/etFreeInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_free_input"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:importantForAutofill="yes"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvInstructions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Step 3: AutoCompleteTextView (Country suggestions) -->
+    <AutoCompleteTextView
+        android:id="@+id/actvCountry"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_select_country"
+        android:inputType="textAutoComplete"
+        android:minHeight="48dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/etFreeInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Step 4: Spinner (5 sample options) -->
+    <Spinner
+        android:id="@+id/spinnerOptions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toBottomOf="@id/actvCountry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+```res\values\strings.xml
+<resources>
+    <string name="app_name">Lab Exercises</string>
+    <string name="instructions">Please fill in the form below:</string>
+    <string name="hint_free_input">Enter your name or message</string>
+    <string name="hint_select_country">Start typing a country...</string>
+
+    <!-- For Spinner -->
+    <string-array name="spinner_options">
+        <item>Option 1</item>
+        <item>Option 2</item>
+        <item>Option 3</item>
+        <item>Option 4</item>
+        <item>Option 5</item>
+    </string-array>
+
+    <!-- For AutoCompleteTextView -->
+    <string-array name="countries">
+        <item>United States</item>
+        <item>Canada</item>
+        <item>United Kingdom</item>
+        <item>Germany</item>
+        <item>France</item>
+        <item>Japan</item>
+        <item>Australia</item>
+        <item>India</item>
+        <item>Brazil</item>
+        <item>Mexico</item>
+    </string-array>
+</resources>
+
+```end of code
