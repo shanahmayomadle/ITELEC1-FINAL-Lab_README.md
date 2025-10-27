@@ -84,7 +84,6 @@ android {
     compileSdk {
         version = release(36)
     }
-
     buildFeatures {
         viewBinding = true
     }
@@ -142,5 +141,4 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
 
-```end of codes
-
+```end of code
