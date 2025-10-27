@@ -1,4 +1,4 @@
-```MainActivity.kt
+```kotlin+java/.../.../MainActivity
 package com.lifecyclesample.mainactivity
 
 import android.os.Bundle
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-```manifest/AndroidManifest.xml
+```manifests/AndroidManifest.xml
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lifecyclesample.mainactivity">
@@ -345,7 +345,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-```Gradle Scripts : gradle.build.kts - Module: app
+```Gradle Scripts : gradle.build.kts(Module: app)
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -412,4 +412,4 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
 
-```end of codes
+```end of code here
