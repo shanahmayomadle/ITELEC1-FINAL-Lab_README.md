@@ -1,4 +1,4 @@
-```Kotlin : MainActivity.kt
+```kotlin+java/.../.../MainActivity
 package com.lifecyclesample.mainactivity
 
 import android.os.Bundle
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     android:layout_height="match_parent"
     android:padding="32dp">
 
-        <!-- Static Image (optional) -->
+        <!-- Static Image -->
         <ImageView
             android:id="@+id/imgStatic"
             android:layout_width="100dp"
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-```ews/values/strings.xml
+```res/values/strings.xml
 <resources>
     <string name="app_name">MainActivity</string>
     <string name="toggle_image">Toggle Image</string>
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-```Gradle Scripts/build.gradle.kts - Module:app
+```Gradle Scripts/build.gradle.kts(Module: app)
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -195,4 +195,4 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
 
-```end of codes
+```end of code here
